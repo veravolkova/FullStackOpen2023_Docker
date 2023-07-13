@@ -1,0 +1,11 @@
+$ docker start -i peaceful_panini
+root@c2259d7b99a3:/# apt-get update
+root@c2259d7b99a3:/# apt-get -y install nano
+root@c2259d7b99a3:/# nano /usr/src/app/index.js
+
+console.log('Hello World')
+
+CTRL+O
+CTRL+X
+Y
+ENTER

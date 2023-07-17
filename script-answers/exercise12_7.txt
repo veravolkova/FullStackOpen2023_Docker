@@ -1,0 +1,19 @@
+Step 1: install dotenv (Windows)
+Step 2: docker-compose.dev.yml:
+
+version: '3.8'
+
+services:
+   mongo:
+    image: mongo
+    ports:
+     - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes: 
+     - "C:\\Users\\secret\\part12-containers-applications-main\\todo-app\\todo-backend\\mongo\\mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js"
+    env_file: "C:\\Users\\secret\\part12-containers-applications-main\\todo-app\\todo-backend\\.env"
+
+Step 3: docker compose -f docker-compose.dev.yml up

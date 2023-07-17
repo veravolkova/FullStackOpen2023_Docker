@@ -1,0 +1,13 @@
+Step 1: put REDIS_URL in .env = "redis://localhost:6379"
+
+Step2: add to Docker file:
+redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "C:\\Users\\secret\\part12-containers-applications-main\\todo-app\\todo-backend\\redis:/data"
+    env_file: "C:\\Users\\secret\\part12-containers-applications-main\\todo-app\\todo-backend\\.env"
+
+
+

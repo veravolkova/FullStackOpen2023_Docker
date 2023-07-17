@@ -1,0 +1,38 @@
+C:\Users\secret>docker exec -it todo-backend-mongo-1 bash
+root@0c8d4525bfb5:/# mongosh -u root -p example
+Current Mongosh Log ID: 64b13c9294d1a5762f5b9b81
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.1
+Using MongoDB:          6.0.7
+Using Mongosh:          1.10.1
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-07-14T06:12:31.684+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2023-07-14T06:12:31.684+00:00: vm.max_map_count is too low
+------
+
+test> show dbs
+admin         100.00 KiB
+config        108.00 KiB
+local          72.00 KiB
+the_database   56.00 KiB
+test> use the_database
+switched to db the_database
+the_database> show collections
+todos
+the_database>
+
+the_database> db.todos.insertOne({
+...    text: 'Increase the number of tools in my toolbelt',
+...    isbn: false
+the_database>
+{
+  acknowledged: true,
+  insertedId: ObjectId("64b13cea94d1a5762f5b9b82")
+}
+
+C:\Users\secret>docker commit todo-backend-mongo-1
+sha256:e907ded54f1fe33521ae....
+

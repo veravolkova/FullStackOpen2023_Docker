@@ -1,0 +1,21 @@
+PS C:\Users\secret\part12-containers-applications-main\todo-app\todo-backend> docker build -t todo-backend .
+PS C:\Users\secret\part12-containers-applications-main\todo-app\todo-backend> docker run -p 3000:3000 todo-backend  
+
+> todo-express-backend@0.0.0 start
+> node ./bin/www
+
+GET / 200 2.632 ms - 12
+
+
+Docker file contents:
+FROM node:16
+  
+WORKDIR /usr/src/app
+
+COPY --chown=node:node . .
+RUN npm ci 
+
+ENV DEBUG=playground:*
+  
+USER node
+CMD npm start

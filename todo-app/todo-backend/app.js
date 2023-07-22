@@ -7,8 +7,9 @@ const indexRouter = require('./routes/index');
 const todosRouter = require('./routes/todos');
 
 const app = express();
-
 app.use(cors());
+
+app.use(express.static('build'))
 
 app.use(logger('dev'));
 app.use(express.json());

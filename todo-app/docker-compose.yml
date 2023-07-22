@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+   redis:
+    image: redis
+    expose:
+      - 6379
+    ports:
+      - "6379:6379"
+    command: ['redis-server', '--appendonly', 'yes']
+    container_name: todo-app-redis
+    volumes:
+      - "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-backend\\redis_data:/data"
+
+   mongo:
+    image: mongo
+    ports:
+     - 3456:27017
+    container_name: todo-app-db
+    volumes: 
+     - "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-backend\\mongo\\mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js"
+     - "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-backend\\mongo_data:/data/db"
+   
+   app:
+      image: todo-front-prod
+      build:
+        context: "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-frontend"
+        dockerfile: Dockerfile
+      container_name: todo-app-ui
+      depends_on:
+       - server
+      env_file: "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-frontend\\.env"
+
+   server:                   
+      image: todo-back-prod
+      build:
+        context: "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-backend" 
+        dockerfile: Dockerfile
+      container_name: todo-app-server
+      env_file: "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\todo-backend\\.env"
+      depends_on:
+        - redis 
+        - mongo
+
+   nginx:
+      image: nginx:1.20.1
+      volumes:
+        - "C:\\Users\\verap\\part12-containers-applications-main\\todo-app\\nginx.conf:/etc/nginx/nginx.conf:ro"
+      ports:
+        - 8080:80
+      container_name: todo-app-reverse-proxy
+      depends_on:
+       - app 
+       - server
+
+volumes:
+  mongo_data:

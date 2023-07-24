@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    image: phonebook-front-dev
+    stdin_open: true
+    build:
+      context: "C:\\Users\\verap\\part12-containers-applications-main\\phonebook\\phonebook_frontend"
+      dockerfile: dev.Dockerfile
+    container_name: phonebook-app-ui-dev
+    volumes:
+     - "C:\\Users\\verap\\part12-containers-applications-main\\phonebook\\phonebook_frontend\\:/usr/src/app" 
+    environment:
+     - REACT_APP_BACKEND_URL = '/api/'
+     - CHOKIDAR_USEPOLLING=true
+    depends_on:
+     - server
+
+  debug-helper:
+      image: busybox
+      container_name: phonebook-app-dev-debug-helper
+
+  server:                   
+      image: phonebook-back-dev
+      build:
+        context: "C:\\Users\\verap\\part12-containers-applications-main\\phonebook\\phonebook_backend"
+        dockerfile: dev.Dockerfile
+      container_name: phonebook-app-server-dev
+      volumes:
+       - C:\\Users\\verap\\part12-containers-applications-main\\phonebook\\phonebook_backend\\:/usr/src/app
+      env_file: "C:\\Users\\verap\\part12-containers-applications-main\\phonebook\\phonebook_backend\\.env"
+      depends_on:
+       - mongo 
+  mongo:
+    image: mongo
+    ports:
+     - 3456:27017
+    container_name: phonebook-app-dev-db
+
+  nginx:
+      image: nginx:1.20.1
+      volumes:
+       - "C:\\Users\\verap\\part12-containers-applications-main\\phonebook\\nginx.conf:/etc/nginx/nginx.conf:ro"
+      ports:
+        - 8080:80
+      depends_on:
+       - app 
+       - server
+      container_name: phonebook-app-dev-reverse-proxy
